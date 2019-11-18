@@ -1,8 +1,8 @@
 {
    "type": "mssql",
    "host": "localhost",
-   "username": "mingxiangchan",
-   "password": "123123",
+   "username": "jia_jun_ong",
+   "password": "Qwert12345",
    "database": "airbnb_dev",
    "synchronize": true,
    "logging": false,
