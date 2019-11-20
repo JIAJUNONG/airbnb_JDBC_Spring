@@ -25,6 +25,38 @@ public class PropertyController {
         return repo.getAll();
     }
 
+    @PostMapping(value = "/properties")
+    public Property create(@RequestBody Property property){
+        repo.addProperty(property);
+        return property;
+    }
+
+
+    @GetMapping(value = "/properties/{id}")
+    public Property show(@PathVariable("id") int id){
+        Property property = repo.getOne(id);
+    return property;
+    }
+
+
+    @PostMapping(value = "/properties/{id}")
+    public void update(
+        @PathVariable("id") int id, 
+        @RequestBody Property newProperty){
+        repo.updateProperty(id,newProperty);
+    }
+
+
+    @DeleteMapping(value = "/properties/{id}")
+    public String delete(@PathVariable("id") int id){
+        if(repo.propertyExists(id)){
+            repo.deleteProperty(id);
+            return "Property successfully deleted";
+        } else {
+            return "Property doesn't exist";
+        }
+    }
+
 
     
 }

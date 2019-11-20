@@ -25,6 +25,36 @@ public class UserController {
         return repo.getAll();
     }
 
+    @PostMapping(value = "/users")
+    public User create(@RequestBody User user){
+        repo.addUser(user);
+        return user;
+    }
 
+
+    @GetMapping(value = "/users/{id}")
+    public User show(@PathVariable("id") int id){
+        User user = repo.getOne(id);
+    return user;
+    }
+
+
+    @PostMapping(value = "/users/{id}")
+    public void update(
+        @PathVariable("id") int id, 
+        @RequestBody User newUser){
+        repo.updateUser(id,newUser);
+    }
+
+
+    @DeleteMapping(value = "/users/{id}")
+    public String delete(@PathVariable("id") int id){
+        if(repo.userExists(id)){
+            repo.deleteUser(id);
+            return "User successfully deleted";
+        } else {
+            return "User doesn't exist";
+        }
+    }
     
 }
