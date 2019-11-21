@@ -27,4 +27,42 @@ public class PaymentRepository {
         return this.jdbcTemplate.query(sql, rowMapper);
     }
 
+    public void addPayment (Payment payment){
+        String sql = "INSERT INTO [airbnb_dev].[dbo].[payment] (status, amount, created_at, updated_at, booking_id ) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, payment.getStatus(), payment.getAmount(), payment.getCreated_at(), payment.getUpdated_at(), payment.getBooking_id());
+
+        sql = "SELECT id FROM [airbnb_dev].[dbo].[payment] WHERE status = ? and amount = ? and created_at = ? and updated_at = ? and booking_id = ?";
+        int paymentId = jdbcTemplate.queryForObject(sql, Integer.class, payment.getStatus(), payment.getAmount(), payment.getCreated_at(), payment.getUpdated_at(), payment.getBooking_id());
+
+        payment.setId(paymentId);
+    }
+
+    public Payment getOne(int paymentId){
+        String sql = "SELECT * FROM [airbnb_dev].[dbo].[payment] WHERE id = ?";
+        RowMapper<Payment> rowMapper = new PaymentRowMapper();
+        return jdbcTemplate.queryForObject(sql, rowMapper, paymentId);
+    }
+
+
+    public void updatePayment(int paymentId, Payment payment){
+        String sql = "UPDATE [airbnb_dev].[dbo].[payment] SET status = ? WHERE id = ?";
+        jdbcTemplate.update(sql, payment.getStatus(), paymentId);
+    }
+
+
+    public Boolean paymentExists(int paymentId){
+        String sql = "SELECT count(*) FROM [airbnb_dev].[dbo].[payment] WHERE id = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, paymentId);
+        if(count == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void deletePayment(int paymentId){
+        String sql = "DELETE FROM [airbnb_dev].[dbo].[payment] WHERE id = ?";
+        jdbcTemplate.update(sql, paymentId);
+    }
+
 }

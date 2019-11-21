@@ -25,6 +25,36 @@ public class BookingController {
         return repo.getAll();
     }
 
+    @PostMapping(value = "/bookings")
+    public Booking create(@RequestBody Booking booking){
+        repo.addBooking(booking);
+        return booking;
+    }
+
+    @GetMapping(value = "/bookings/{id}")
+    public Booking show(@PathVariable("id") int id){
+        Booking booking = repo.getOne(id);
+    return booking;
+    }
+
+    @PostMapping(value = "/bookings/{id}")
+    public void update(
+        @PathVariable("id") int id, 
+        @RequestBody Booking newBooking){
+        repo.updateBooking(id,newBooking);
+    }
+
+
+    @DeleteMapping(value = "/bookings/{id}")
+    public String delete(@PathVariable("id") int id){
+        if(repo.bookingExists(id)){
+            repo.deleteBooking(id);
+            return "Booking successfully deleted";
+        } else {
+            return "Booking doesn't exist";
+        }
+    }
+
 
     
 }

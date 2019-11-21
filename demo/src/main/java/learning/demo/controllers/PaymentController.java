@@ -26,5 +26,38 @@ public class PaymentController {
     }
 
 
+    @PostMapping(value = "/payments")
+    public Payment create(@RequestBody Payment payment){
+        repo.addPayment(payment);
+        return payment;
+    }
+
+
+    @GetMapping(value = "/payments/{id}")
+    public Payment show(@PathVariable("id") int id){
+        Payment payment = repo.getOne(id);
+    return payment;
+    }
+
+
+    @PostMapping(value = "/payments/{id}")
+    public void update(
+        @PathVariable("id") int id, 
+        @RequestBody Payment newPayment){
+        repo.updatePayment(id,newPayment);
+    }
+
+
+    @DeleteMapping(value = "/payments/{id}")
+    public String delete(@PathVariable("id") int id){
+        if(repo.paymentExists(id)){
+            repo.deletePayment(id);
+            return "Payment successfully deleted";
+        } else {
+            return "Payment doesn't exist";
+        }
+    }
+
+
     
 }
